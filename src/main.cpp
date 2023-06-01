@@ -1,26 +1,14 @@
-#include <chrono>
 #include <iostream>
 #include <string>
 #include <tuple>
-#include <vector>
-#include "adjacency_matrix.hpp"
-#include "binary_dial.hpp"
 #include "cxxopts.hpp"
-#include "distance.hpp"
-#include "edge_matrix.hpp"
 #include "file_manager.hpp"
-#include "sns.hpp"
-#include "graph_computer.hpp"
+#include "test_0.hpp"
 
 using std::cout;
 using std::endl;
-using std::get;
-using std::make_tuple;
-using std::string;
-using std::tuple;
-using std::vector;
 
-tuple<string, string> parse(int argc, const char* argv[]) {
+tuple<std::string, std::string> parse(int argc, const char* argv[]) {
     std::string inputFileName = "";
     std::string ouputFileName = "";
 
@@ -56,49 +44,9 @@ tuple<string, string> parse(int argc, const char* argv[]) {
 
 int main(int argc, const char* argv[]) {
     auto file_tuple = parse(argc, argv);
-    auto read_result = read_edge_file(get<0>(file_tuple));
+    auto read_result = read_edge_file(std::get<0>(file_tuple));
 
-    // ----------
-    // auto adjacency_matrix =
-    //     AdjacencyMatrix(get<0>(read_result), get<1>(read_result));
-    // cout << adjacency_matrix.get_item(0, 633).printed_string() << endl;
-    // ----------
-
-    // ----------
-    // auto edge_matrix = EdgeMatrix(get<0>(read_result), get<1>(read_result));
-    // auto start = std::chrono::high_resolution_clock::now();
-    // for (int i = 0; i < edge_matrix.node_count; i++) {
-    //     GraphComputer<Distance>::binary_dial(edge_matrix, 0);
-    // }
-    // auto stop = std::chrono::high_resolution_clock::now();
-    // auto duration =
-    //     std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-    // cout << duration.count() << endl;
-    // ----------
-
-    // ----------
-    // auto edge_indices = EdgeIndices(get<0>(read_result), get<1>(read_result));
-    // auto start = std::chrono::high_resolution_clock::now();
-    // for (int i = 0; i < edge_indices.node_count; i++) {
-    //     auto distances = naked_binary_dial(edge_indices, i, 1);
-    // }
-    // auto stop = std::chrono::high_resolution_clock::now();
-    // auto duration =
-    //     std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-    // cout << duration.count() << endl;
-    // ----------
-
-    // ----------
-    auto edge_indices = EdgeIndices(get<0>(read_result), get<1>(read_result));
-    auto start = std::chrono::high_resolution_clock::now();
-
-    cout << compute_sns(edge_indices) << endl;
-
-    auto stop = std::chrono::high_resolution_clock::now();
-    auto duration =
-        std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-    cout << duration.count() << endl;
-    // ----------
+    run_test_0(read_result);
 
     return 0;
 }

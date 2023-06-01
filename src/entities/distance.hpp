@@ -8,11 +8,6 @@
 
 using std::cout;
 using std::endl;
-using std::get;
-using std::make_tuple;
-using std::string;
-using std::tuple;
-using std::vector;
 
 class Distance {
    public:
@@ -46,7 +41,7 @@ class Distance {
         }
     }
 
-    string printed_string() {
+    std::string printed_string() {
         return string_format("(%d, %d)", disconnected, connected);
     }
 
