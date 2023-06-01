@@ -23,7 +23,7 @@ void run_test_0(tuple<vector<tuple<int, int>>, int> read_result) {
 
     // cout << run_and_print_time(compute_sns, edge_indices) << endl;
 
-    run_sns_parallel(edge_indices, 4);
+    run_and_print_time(run_sns_parallel, edge_indices, 20);
 }
 
 #endif

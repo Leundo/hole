@@ -37,7 +37,7 @@ int compute_sns_parallel(EdgeIndices& edge_indices) {
     return node_with_max_graph_distance;
 }
 
-void run_sns_parallel(EdgeIndices& edge_indices, int thread_count) {
+int run_sns_parallel(EdgeIndices& edge_indices, int thread_count) {
     int node_count = edge_indices.node_count;
     ThreadPool thread_pool(thread_count);
     std::vector<std::future<Distance>> results;
@@ -60,6 +60,7 @@ void run_sns_parallel(EdgeIndices& edge_indices, int thread_count) {
     }
     cout << node_id_with_max_graph_distance << endl;
     cout << max_graph_distance.printed_string() << endl;
+    return 0;
 }
 
 #endif

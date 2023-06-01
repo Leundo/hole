@@ -30,11 +30,11 @@ Distance compute_graph_distance_with_mask(EdgeIndices& edge_indices, int mask) {
     Distance graph_distance = Distance(0, 0);
     for (int row = 0; row < edge_indices.node_count; row++) {
         if (row != mask) {
-            auto distances = naked_binary_dial(edge_indices, row, mask);
+            auto distances = naked_bfs(edge_indices, row, mask);
             graph_distance = graph_distance + sum_of_distances(distances, mask);
         }
     }
-    cout << graph_distance.printed_string() << endl;
+    // cout << graph_distance.printed_string() << endl;
     return graph_distance;
 }
 

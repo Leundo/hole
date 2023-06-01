@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+find_package(Threads REQUIRED)
 
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
@@ -27,3 +28,8 @@ aux_source_directory(${PROJECT_SOURCE_DIR}/src/tests CPP_SRC)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 add_executable(hole ${CPP_SRC})
+
+
+if(TARGET Threads::Threads)                                                                                                                                                                                                                   
+  target_link_libraries(hole PRIVATE Threads::Threads)                                                                                                                                                                                        
+endif()
