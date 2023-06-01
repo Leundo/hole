@@ -9,6 +9,7 @@
 #include "distance.hpp"
 #include "edge_matrix.hpp"
 #include "file_manager.hpp"
+#include "sns.hpp"
 #include "graph_computer.hpp"
 
 using std::cout;
@@ -65,33 +66,39 @@ int main(int argc, const char* argv[]) {
 
     // ----------
     // auto edge_matrix = EdgeMatrix(get<0>(read_result), get<1>(read_result));
+    // auto start = std::chrono::high_resolution_clock::now();
     // for (int i = 0; i < edge_matrix.node_count; i++) {
-    //     auto start = std::chrono::high_resolution_clock::now();
-
     //     GraphComputer<Distance>::binary_dial(edge_matrix, 0);
-
-    //     auto stop = std::chrono::high_resolution_clock::now();
-    //     auto duration =
-    //     std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-    //     cout << duration.count() << endl;
     // }
+    // auto stop = std::chrono::high_resolution_clock::now();
+    // auto duration =
+    //     std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    // cout << duration.count() << endl;
     // ----------
 
+    // ----------
+    // auto edge_indices = EdgeIndices(get<0>(read_result), get<1>(read_result));
+    // auto start = std::chrono::high_resolution_clock::now();
+    // for (int i = 0; i < edge_indices.node_count; i++) {
+    //     auto distances = naked_binary_dial(edge_indices, i, 1);
+    // }
+    // auto stop = std::chrono::high_resolution_clock::now();
+    // auto duration =
+    //     std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    // cout << duration.count() << endl;
+    // ----------
+
+    // ----------
     auto edge_indices = EdgeIndices(get<0>(read_result), get<1>(read_result));
-    for (int i = 0; i < edge_indices.node_count; i++) {
-        auto start = std::chrono::high_resolution_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
 
-        auto distances = naked_binary_dial(edge_indices, i);
+    cout << compute_sns(edge_indices) << endl;
 
-        auto stop = std::chrono::high_resolution_clock::now();
-        auto duration =
-            std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-        // for (auto distance: distances) {
-        //     cout << distance << " ";
-        // }
-        // cout << endl;
-        cout << duration.count() << endl;
-    }
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration =
+        std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    cout << duration.count() << endl;
+    // ----------
 
     return 0;
 }
