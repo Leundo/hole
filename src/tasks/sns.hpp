@@ -8,6 +8,7 @@
 #include <string>
 #include <tuple>
 #include <vector>
+#include "file_manager.hpp"
 #include "distance.hpp"
 #include "running_arg.hpp"
 #include "sp_tool.hpp"
