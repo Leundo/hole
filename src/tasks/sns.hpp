@@ -8,8 +8,8 @@
 #include <string>
 #include <tuple>
 #include <vector>
-#include "file_manager.hpp"
 #include "distance.hpp"
+#include "file_manager.hpp"
 #include "running_arg.hpp"
 #include "sp_tool.hpp"
 #include "thread_pool.hpp"
@@ -44,14 +44,17 @@ int compute_sns_parallel(EdgeIndices& edge_indices,
     while (current_part <= node_count) {
         if (std::find(isolated_nodes.begin(), isolated_nodes.end(),
                       current_part - 1) == isolated_nodes.end()) {
-            // results.emplace_back(
-            //     thread_pool.enqueue(compute_graph_distance_with_mask,
-            //                         edge_indices, current_part - 1));
-            results.emplace_back(
-                thread_pool.enqueue(compute_graph_distance_with_mask_and_isolated_nodes,
-                                    edge_indices, current_part - 1, isolated_nodes));
+            // results.emplace_back(thread_pool.enqueue(
+            //     compute_graph_distance_with_mask_and_isolated_nodes,
+            //     edge_indices, current_part - 1, isolated_nodes));
+            auto func = [&edge_indices, &current_part, &isolated_nodes]() {
+                int mask = current_part - 1;
+                return compute_graph_distance_with_mask_and_isolated_nodes(edge_indices, mask, isolated_nodes);
+            };
+            results.emplace_back(thread_pool.enqueue(func));
         } else {
-            results.emplace_back(std::future<Distance>(std::async([](){return Distance(0, 0);})));
+            results.emplace_back(std::future<Distance>(
+                std::async([]() { return Distance(0, 0); })));
         }
         ++current_part;
     }
@@ -74,7 +77,7 @@ int compute_sns_parallel(EdgeIndices& edge_indices,
 int compute_k_sns_parallel(std::ofstream& ofs,
                            int k,
                            EdgeIndices& edge_indices,
-                           std::vector<int> isolated_nodes,
+                           std::vector<int>& isolated_nodes,
                            int thread_count) {
     int node_count = edge_indices.node_count;
     ThreadPool thread_pool(thread_count);

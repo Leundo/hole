@@ -14,7 +14,7 @@ class EdgeIndices {
     int node_count = 0;
     std::vector<std::vector<int>> matrix = std::vector<std::vector<int>>();
 
-    EdgeIndices(std::vector<std::tuple<int, int>> edge_vector, int node_count) {
+    EdgeIndices(const std::vector<std::tuple<int, int>>& edge_vector, const int& node_count) {
         this->node_count = node_count;
         matrix = std::vector<std::vector<int>>(node_count, std::vector<int>());
         for (auto edge : edge_vector) {
