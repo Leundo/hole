@@ -13,3 +13,4 @@ yarn-error.log*
 bin/*
 build/*
 build/CMakeFiles*
+logs/*

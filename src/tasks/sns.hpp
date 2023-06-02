@@ -74,8 +74,14 @@ int compute_k_sns_parallel(std::ofstream& ofs,
     ThreadPool thread_pool(thread_count);
 
     for (size_t epoch = isolated_nodes.size(); epoch <= k; epoch++) {
+        auto start = std::chrono::high_resolution_clock::now();
         auto node_id =
             compute_sns_parallel(edge_indices, isolated_nodes, thread_pool);
+        auto stop = std::chrono::high_resolution_clock::now();
+        auto duration =
+            std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+        cout << "Time: " << duration.count() << endl;
+
         cout << "Epoch:\t" << epoch << " " << node_id << endl;
         write_item(ofs, node_id);
         edge_indices.isolate(node_id);
@@ -99,7 +105,8 @@ void run_sns(RunningArg running_arg) {
                     generate_file_name(running_arg.output_file_mark, ".txt"));
     write_vector(ofs, isolated_nodes);
 
-    compute_k_sns_parallel(ofs, 10, edge_indices, isolated_nodes, 4);
+    compute_k_sns_parallel(ofs, running_arg.k, edge_indices, isolated_nodes,
+                           running_arg.thread_count);
     ofs.close();
 }
 
