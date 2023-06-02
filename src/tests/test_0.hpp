@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include "file_manager.hpp"
-#include "binary_dial.hpp"
 #include "bfs.hpp"
 #include "time_recorder.hpp"
 #include "sp_tool.hpp"
@@ -12,8 +11,8 @@
 using std::cout;
 using std::endl;
 
-void run_test_0(tuple<vector<tuple<int, int>>, int> read_result) {
-    auto edge_indices = EdgeIndices(get<0>(read_result), get<1>(read_result));
+void run_test_0(const std::tuple<std::vector<std::tuple<int, int>>, int>& read_result) {
+    auto edge_indices = EdgeIndices(std::get<0>(read_result), std::get<1>(read_result));
 
     // cout << sum_of_distances(run_and_print_time(naked_binary_dial, edge_indices, 1, -1), -1).printed_string() << endl;
     // cout << sum_of_distances(run_and_print_time(naked_bfs, edge_indices, 1, -1), -1).printed_string() << endl;
@@ -23,7 +22,14 @@ void run_test_0(tuple<vector<tuple<int, int>>, int> read_result) {
 
     // cout << run_and_print_time(compute_sns, edge_indices) << endl;
 
-    run_and_print_time(run_sns_parallel, edge_indices, 20);
+    // run_and_print_time(run_sns_parallel, edge_indices, 20);
+
+    // cout << read_vector("../logs/test.txt")[1] << endl;
+    // cout << generate_file_name("abc", ".txt") << endl;
+
+    auto ofs = open("../logs", "abc_2023-6-2|10:33:21.txt");
+    // write_vector(ofs, std::vector<int>({0, 1, 2}));
+    write_item(ofs, 123);
 }
 
 #endif

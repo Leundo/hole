@@ -8,7 +8,15 @@
 using std::cout;
 using std::endl;
 
-tuple<std::string, std::string> parse(int argc, const char* argv[]) {
+struct RunningArg {
+   std::string edge_indices_path = "";
+   std::string output_dir = "";
+   std::string checkpoint_path = "";
+   std::string output_file_mark = "";
+};
+
+
+std::tuple<std::string, std::string> parse(int argc, const char* argv[]) {
     std::string inputFileName = "";
     std::string ouputFileName = "";
 
@@ -21,7 +29,7 @@ tuple<std::string, std::string> parse(int argc, const char* argv[]) {
         auto result = options.parse(argc, argv);
         if (result.count("help")) {
             std::cout << options.help() << std::endl;
-            return make_tuple(inputFileName, ouputFileName);
+            return std::make_tuple(inputFileName, ouputFileName);
         }
 
         if (result.count("input")) {
@@ -35,7 +43,7 @@ tuple<std::string, std::string> parse(int argc, const char* argv[]) {
         }
 
         std::cout << std::endl;
-        return make_tuple(inputFileName, ouputFileName);
+        return std::make_tuple(inputFileName, ouputFileName);
     } catch (const cxxopts::OptionException& e) {
         std::cout << "error parsing options: " << e.what() << std::endl;
         exit(1);
@@ -44,7 +52,7 @@ tuple<std::string, std::string> parse(int argc, const char* argv[]) {
 
 int main(int argc, const char* argv[]) {
     auto file_tuple = parse(argc, argv);
-    auto read_result = read_edge_file(std::get<0>(file_tuple));
+    auto&& read_result = read_edge_file(std::get<0>(file_tuple));
 
     run_test_0(read_result);
 
