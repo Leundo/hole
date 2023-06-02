@@ -43,9 +43,14 @@ int compute_sns_parallel(EdgeIndices& edge_indices,
     while (current_part <= node_count) {
         if (std::find(isolated_nodes.begin(), isolated_nodes.end(),
                       current_part - 1) == isolated_nodes.end()) {
+            // results.emplace_back(
+            //     thread_pool.enqueue(compute_graph_distance_with_mask,
+            //                         edge_indices, current_part - 1));
             results.emplace_back(
-                thread_pool.enqueue(compute_graph_distance_with_mask,
-                                    edge_indices, current_part - 1));
+                thread_pool.enqueue(compute_graph_distance_with_mask_and_isolated_nodes,
+                                    edge_indices, current_part - 1, isolated_nodes));
+        } else {
+            results.emplace_back(std::future<Distance>(std::async([](){return Distance(0, 0);})));
         }
         ++current_part;
     }
@@ -80,7 +85,7 @@ int compute_k_sns_parallel(std::ofstream& ofs,
         auto stop = std::chrono::high_resolution_clock::now();
         auto duration =
             std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-        cout << "Time: " << duration.count() << endl;
+        cout << "Time: " << duration.count() / 1000000 << endl;
 
         cout << "Epoch:\t" << epoch << " " << node_id << endl;
         write_item(ofs, node_id);
@@ -100,6 +105,7 @@ void run_sns(RunningArg running_arg) {
     if (running_arg.input_checkpoint_path != "") {
         isolated_nodes = read_vector(running_arg.input_checkpoint_path);
     }
+    edge_indices.isolate(isolated_nodes);
 
     auto ofs = open(running_arg.output_dir,
                     generate_file_name(running_arg.output_file_mark, ".txt"));
