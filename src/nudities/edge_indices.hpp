@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "distance.hpp"
 
 using std::cout;
@@ -20,6 +21,44 @@ class EdgeIndices {
             int source = std::get<0>(edge);
             int target = std::get<1>(edge);
             matrix[source].push_back(target);
+        }
+    }
+
+    void isolate(const std::vector<int>& nodes) {
+        for (size_t source = 0; source < matrix.size(); source++) {
+            if (std::find(nodes.begin(), nodes.end(), source) != nodes.end()) {
+                matrix[source].clear();
+            } else {
+                matrix[source].erase(
+                    std::remove_if(
+                        matrix[source].begin(),
+                        matrix[source].end(),
+                        [&nodes](const int& target) {
+                            return std::find(nodes.begin(), nodes.end(), target) != nodes.end();
+                        }
+                    ),
+                    matrix[source].end()
+                );
+            }
+        }
+    }
+
+    void isolate(const int& node) {
+        for (size_t source = 0; source < matrix.size(); source++) {
+            if (source == node) {
+                matrix[source].clear();
+            } else {
+                matrix[source].erase(
+                    std::remove_if(
+                        matrix[source].begin(),
+                        matrix[source].end(),
+                        [&node](const int& target) {
+                            return target == node;
+                        }
+                    ),
+                    matrix[source].end()
+                );
+            }
         }
     }
 };
