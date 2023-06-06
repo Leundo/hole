@@ -47,8 +47,8 @@ int compute_sns_parallel(EdgeIndices& edge_indices,
             // results.emplace_back(thread_pool.enqueue(
             //     compute_graph_distance_with_mask_and_isolated_nodes,
             //     edge_indices, current_part - 1, isolated_nodes));
-            auto func = [&edge_indices, &current_part, &isolated_nodes]() {
-                int mask = current_part - 1;
+            int mask = current_part - 1;
+            auto func = [&edge_indices, mask, &isolated_nodes]() {
                 return compute_graph_distance_with_mask_and_isolated_nodes(edge_indices, mask, isolated_nodes);
             };
             results.emplace_back(thread_pool.enqueue(func));

@@ -5,6 +5,7 @@
 #include "file_manager.hpp"
 #include "running_arg.hpp"
 #include "sns.hpp"
+#include "deg.hpp"
 #include "test_0.hpp"
 
 using std::cout;
@@ -79,7 +80,8 @@ int main(int argc, const char* argv[]) {
     auto running_arg = parse(argc, argv);
 
     // run_test_0(running_arg);
-    run_sns(running_arg);
+    // run_sns(running_arg);
+    run_deg(running_arg);
 
     return 0;
 }
