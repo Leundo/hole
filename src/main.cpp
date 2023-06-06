@@ -2,10 +2,10 @@
 #include <string>
 #include <tuple>
 #include "cxxopts.hpp"
+#include "deg.hpp"
 #include "file_manager.hpp"
 #include "running_arg.hpp"
 #include "sns.hpp"
-#include "deg.hpp"
 #include "test_0.hpp"
 
 using std::cout;
@@ -20,8 +20,10 @@ struct RunningArg parse(int argc, const char* argv[]) {
         "o,output", "Output Dir", cxxopts::value<std::string>())(
         "c,checkpoint", "Input Checkpoint Path", cxxopts::value<std::string>())(
         "m,mark", "Output File Mark", cxxopts::value<std::string>())(
+        "d,mode", "Mode", cxxopts::value<std::string>())(
         "k,knum", "K Number", cxxopts::value<int>())("t,thread", "Thread Count",
-                                                  cxxopts::value<int>());
+                                                     cxxopts::value<int>())(
+        "p,hop", "Hop", cxxopts::value<int>());
 
     try {
         auto result = options.parse(argc, argv);
@@ -56,16 +58,26 @@ struct RunningArg parse(int argc, const char* argv[]) {
                       << std::endl;
         }
 
+        if (result.count("mode")) {
+            running_arg.mode = result["mode"].as<std::string>();
+            std::cout << "Mode:\t\t" << running_arg.mode
+                      << std::endl;
+        }
+
         if (result.count("knum")) {
             running_arg.k = result["knum"].as<int>();
-            std::cout << "K Number:\t\t" << running_arg.k
-                      << std::endl;
+            std::cout << "K Number:\t\t" << running_arg.k << std::endl;
         }
 
         if (result.count("thread")) {
             running_arg.thread_count = result["thread"].as<int>();
             std::cout << "Thread Count:\t\t" << running_arg.thread_count
                       << std::endl;
+        }
+
+        if (result.count("hop")) {
+            running_arg.hop = result["hop"].as<int>();
+            std::cout << "Hop:\t\t" << running_arg.hop << std::endl;
         }
 
         std::cout << std::endl;
@@ -80,8 +92,11 @@ int main(int argc, const char* argv[]) {
     auto running_arg = parse(argc, argv);
 
     // run_test_0(running_arg);
-    // run_sns(running_arg);
-    run_deg(running_arg);
+    if (running_arg.mode == "sns") {
+        run_sns(running_arg);
+    } else if (running_arg.mode == "deg") {
+        run_deg(running_arg);
+    }
 
     return 0;
 }

@@ -97,7 +97,7 @@ void run_deg(RunningArg running_arg) {
     auto ofs = open(running_arg.output_dir,
                     generate_file_name(running_arg.output_file_mark, ".txt"));
     write_vector(ofs, isolated_nodes);
-    compute_k_out_deg_parallel(ofs, running_arg.k, 1, edge_indices,
+    compute_k_out_deg_parallel(ofs, running_arg.k, running_arg.hop, edge_indices,
                                isolated_nodes, running_arg.thread_count);
 
     // cout << compute_out_degree_with_isolated_nodes(edge_indices, 0, 2,
